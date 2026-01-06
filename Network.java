@@ -119,7 +119,7 @@ public class Network {
     public String toString() {
       String ans = "Network:";
         for (int i = 0; i < this.userCount; i++) {
-            ans += users[i].toString() + "\n";
+            ans += "\n" + users[i].toString();
     }
     return ans;
     }
