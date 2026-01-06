@@ -42,19 +42,12 @@ public class Network {
     *  If the given name is already a user in this network, does nothing and returns false;
     *  Otherwise, creates a new user with the given name, adds the user to this network, and returns true. */
     public boolean addUser(String name) {
-        if (userCount < users.length -1){
-            for (int i = 0; i < userCount; i++){
-                if (users[i].getName().equals(name))
-                    return false;
-                if (getUser(name) != null) return false;
-                    
-                users[userCount] = new User(name);
-                userCount++;
-                return true;
-                
-            }
-        }
+        if (userCount >= users.length || getUser(name) != null) {
         return false;
+        }
+        users[userCount] = new User(name);
+        userCount++;
+        return true;
     }
 
     /** Makes the user with name1 follow the user with name2. If successful, returns true.
@@ -98,15 +91,16 @@ public class Network {
     /** Computes and returns the name of the most popular user in this network: 
      *  The user who appears the most in the follow lists of all the users. */
     public String mostPopularUser() {
-        int pop = -1;
-        String mostpop = null;
-        for (int i = 0; i < userCount; i++){
-            if (followeeCount(users[i].getName()) > pop){
-                mostpop = users[i].getName();
-                pop = followeeCount(users[i].getName()) ;
-            }
+        String mostPop = null;
+        int maxCount = -1;
+        for (int i = 0; i < userCount; i++) {
+        int currentCount = followeeCount(users[i].getName());
+        if (currentCount > maxCount) {
+            maxCount = currentCount;
+            mostPop = users[i].getName();
         }
-        return mostpop;
+    }
+        return mostPop;
     }
 
     /** Returns the number of times that the given name appears in the follows lists of all
@@ -123,7 +117,7 @@ public class Network {
 
     // Returns a textual description of all the users in this network, and who they follow.
     public String toString() {
-      String ans = "Network:\n";
+      String ans = "Network:";
         for (int i = 0; i < this.userCount; i++) {
             ans += users[i].toString() + "\n";
     }
